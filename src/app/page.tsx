@@ -4,7 +4,20 @@ import styles from './page.module.css'
 "use client";
 import React, { useEffect, useRef } from 'react'
 import { render } from 'react-dom';
-import { Scene, PerspectiveCamera, WebGL1Renderer, Camera, Mesh, MeshBasicMaterial, BoxGeometry} from "three"
+import { Scene, 
+  PerspectiveCamera,
+  WebGL1Renderer,
+  Camera,
+  Mesh,
+  MeshBasicMaterial,
+  BoxGeometry,
+  SphereGeometry,
+  TextureLoader,
+  BackSide,
+  MeshPhongMaterial,
+  DirectionalLight,
+  HemisphereLight,
+  AmbientLight} from "three"
 
 
 export default function Home() {
@@ -29,10 +42,25 @@ export default function Home() {
       const cubo = new Mesh (geometria,material)
       scene.add(cubo)
 
-
+      //crear SkyBox
+      const Skygeometry = new SphereGeometry(360, 25, 25)
+      const loader = new TextureLoader()
+      const texture = loader.load("/custom-sky.png")
+      const material2 = new MeshPhongMaterial({
+        map: texture
+      })
+      //skybox como tal
+      const skybox = new Mesh(Skygeometry, material2)
+      scene.add(skybox)
+      skybox.material.side = BackSide
+  
+      //crear la iluminación
+      scene.add(new AmbientLight(0xffffff, 0.8))
+      scene.add(new HemisphereLight(0xffffff, 0.8))
+      //Renderizar el sitio como tal
       renderer.setSize(window.innerWidth, window.innerHeight)
+      //Animar las cosas
       const animate = () => {
-        // Aquí puedes realizar las operaciones de animación de tu escena
         cubo.rotation.x += 0.01
         cubo.rotation.y += 0.01
         renderer.render(scene, camera);
