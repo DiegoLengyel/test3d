@@ -25,7 +25,7 @@ export default function Home() {
       camera.position.z = 1;
 
       // Crear cubo
-      //createCube(scene);
+      createCube(scene);
 
       // Crear skybox
       createSkybox(scene);
